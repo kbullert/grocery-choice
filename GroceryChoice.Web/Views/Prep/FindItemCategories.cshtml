@@ -1,0 +1,21 @@
+﻿@model IEnumerable<GroceryChoice.Model.ItemCategory>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Item Categories</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Minor Category ID</th>
+            <th></th>
+        </tr>
+        @foreach (var mc in Model)
+        {
+            <tr>
+                <td>@mc.ItemCategoryId</td>
+                <td>@mc.ItemCategoryName</td>
+                <td>@mc.MinorCategoryId</td>
+            </tr>
+        }
+    </table>
+</div>

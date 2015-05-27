@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GroceryChoice.Model.MajorCategory>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Major Categories</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+        @foreach (var mc in Model)
+        {
+            <tr>
+                <td><a href="/prep/findminorcategories/@mc.MajorCategoryId">@mc.MajorCategoryId</a></td>
+                <td>@mc.MajorCategoryName</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@using(Html.BeginForm("SaveMajorCategory", "Prep"))
+{
+    <input type="hidden" name="MajorCategoryName" value="Condiments" />
+    
+    <button class="btn btn-primary" type="submit">Create</button>
+    <a href="/prep/deletemajorcategory/2" class="btn btn-primary">Delete</a>
+}

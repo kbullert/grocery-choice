@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GroceryChoice.Model.GenericGrocery>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Generic Groceries</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Brand Grocery ID</th>
+            <th>UPC</th>
+            <th>Store</th>
+            <th>StoreBrand</th>
+            <th>Description</th>
+            <th>Size</th>
+        </tr>
+        @foreach (var gg in Model)
+        {
+            <tr>
+                <td>@gg.GenericGroceryId</td>
+                <td>@gg.BrandGroceryId</td>
+                <td>@gg.UPC</td>
+                <td>@gg.Store</td>
+                <td>@gg.StoreBrand</td>
+                <td>@gg.Description</td>
+                <td>@gg.Size</td>>
+            </tr>
+        }
+    </table>
+</div>
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html ng-app="groceryChoice">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <title>Grocery Choice</title>
+</head>
+<body>
+    <div>
+
+    </div>
+    <div class="panel col-xs-3" ng-controller="CategoryCtrl">
+        <ul>
+            <li ng-repeat="major in majorCategories">
+                {{major.MajorCategoryName}}
+                <ul>
+                    <li ng-repeat="minor in minorCategories | filter: { MajorCategoryId: major.MajorCategoryId}">
+                        {{minor.MinorCategoryName}}
+                        <ul>
+                            <li ng-repeat="item in itemCategories | filter: { MinorCategoryId: minor.MinorCategoryId}" ng-hide="!minor.HasItemCategory">
+                                {{item.ItemCategoryName}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="panel col-xs-8" ng-controller="GroceryCtrl">
+        <table class="table table-striped">
+            <tr>
+                <td>Id</td>
+                <td>Brand</td>
+                <td>Description</td>
+                <td>Size</td>
+                <td>UPC</td>
+            </tr>
+            <tr ng-repeat="brand in brandGroceries">
+                <td>{{brand.BrandGroceryId}}</td>
+                <td>{{brand.Brand}}</td>
+                <td>{{brand.Description}}</td>
+                <td>{{brand.Size}}</td>
+                <td>{{brand.UPC}}</td>
+                <td><table class="table table-striped">
+                    <tr>
+                        <td>Store</td>
+                        <td>Store Brand</td>
+                        <td>Description</td>
+                        <td>Size</td>
+                        <td>UPC</td>
+                    </tr>
+                    <tr ng-repeat="generic in genericGroceries | filter: { BrandGroceryId: brand.BrandGroceryId}">
+                        <td>{{generic.Store}}</td>
+                        <td>{{generic.StoreBrand}}</td>
+                        <td>{{generic.Description}}</td>
+                        <td>{{generic.Size}}</td>
+                        <td>{{generic.UPC}}</td>
+                    </tr>
+                </table></td>
+            </tr>
+        </table>
+        
+    </div>
+    <script src="Scripts/app/groceryChoice.js"></script>
+</body>
+</html>

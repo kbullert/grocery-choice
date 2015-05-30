@@ -5,6 +5,5 @@
         public int ItemCategoryId { get; set; }
         public int MinorCategoryId { get; set; }
         public string ItemCategoryName { get; set; }
-        public bool HasItemCategory { get; set; }
     }
 }

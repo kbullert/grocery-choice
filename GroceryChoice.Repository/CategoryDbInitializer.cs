@@ -26,19 +26,19 @@ namespace GroceryChoice.Repository
             context.SaveChanges();
 
             new List<MinorCategory> {
-                new MinorCategory() { MajorCategoryId = 1, MinorCategoryName = "Fruit" },
-                new MinorCategory() { MajorCategoryId = 1, MinorCategoryName = "Vegetables" },
-                new MinorCategory() { MajorCategoryId = 2, MinorCategoryName = "Flour" },
-                new MinorCategory() { MajorCategoryId = 2, MinorCategoryName = "Sugar" }
+                new MinorCategory() { MajorCategoryId = 1, MinorCategoryName = "Fruit", HasItemCategory = true },
+                new MinorCategory() { MajorCategoryId = 1, MinorCategoryName = "Vegetables", HasItemCategory = true },
+                new MinorCategory() { MajorCategoryId = 2, MinorCategoryName = "Flour", HasItemCategory = false },
+                new MinorCategory() { MajorCategoryId = 2, MinorCategoryName = "Sugar", HasItemCategory = false }
             }.ForEach(mc => context.MinorCategories.Add(mc));
 
             context.SaveChanges();
 
             new List<ItemCategory> {
-                new ItemCategory() { MinorCategoryId = 1, ItemCategoryName = "Peaches", HasItemCategory = true },
-                new ItemCategory() { MinorCategoryId = 2, ItemCategoryName = "Peas", HasItemCategory = true },
-                new ItemCategory() { MinorCategoryId = 3, ItemCategoryName = "Flour", HasItemCategory = false },
-                new ItemCategory() { MinorCategoryId = 4, ItemCategoryName = "Sugar", HasItemCategory = false }
+                new ItemCategory() { MinorCategoryId = 1, ItemCategoryName = "Peaches" },
+                new ItemCategory() { MinorCategoryId = 2, ItemCategoryName = "Peas" },
+                new ItemCategory() { MinorCategoryId = 3, ItemCategoryName = "Flour" },
+                new ItemCategory() { MinorCategoryId = 4, ItemCategoryName = "Sugar" }
             }.ForEach(ic => context.ItemCategories.Add(ic));
 
             context.SaveChanges();

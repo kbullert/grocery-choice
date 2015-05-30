@@ -1,53 +1,129 @@
-﻿angular.module('groceryChoice', ['ngResource'])
-    .service('minorCategoryService', function ($resource) {
+﻿angular.module('groceryChoice', ['ui.bootstrap'])
+    
+    //.service('CategoryGroceryService', [function () {
+    //    var self = this;
 
-        return $resource('http://localhost:6200/api/minorcategory/', {});
-    })
-    .service('majorCategoryService', function ($resource) {
+    //    self.majorCategoryId = null;
 
-        return $resource('http://localhost:6200/api/majorcategory/', {});
-    })
-    .service('itemCategoryService', function ($resource) {
+    //    self.minorCategoryId = null;
 
-        return $resource('http://localhost:6200/api/itemcategory/', {});
-    })
-    .service('brandGroceryService', function ($resource) {
-        return $resource('http://localhost:6200/api/brandgrocery/', {});
-    })
-    .service('genericGroceryService', function ($resource) {
-        return $resource('http://localhost:6200/api/genericgrocery/', {});
-    })
-    .controller('GroceryCtrl', ['$scope', 'brandGroceryService', 'genericGroceryService',
-        function ($scope,  brandGroceryService, genericGroceryService) {
+    //    self.itemCategoryId = null;
+    //}])
+    .factory('MinorCategoryService', ['$http', function ($http) {
+        return {
+            query: function () {
+                return $http.get('/api/minorcategory/');
+            },
+            get: function (id) {
+                return $http.get('api.minorcategory' + id);
+            }
+        };
+    }])
+    .factory('MajorCategoryService', ['$http', function ($http) {
+        return {
+            query: function () {
+                return $http.get('/api/majorcategory/');
+            },
+            get: function (id) {
+                return $http.get('api/majorcategory/' + id);
+            }
+        };
+    }])
+    .factory('ItemCategoryService', ['$http', function ($http) {
+        return {
+            query: function () {
+                return $http.get('/api/itemcategory/');
+            },
+            get: function (id) {
+                return $http.get('/api/itemcategory/' + id);
+            }
+        };
+    }])
+    //.factory('BrandGroceryService', ['$http', function ($http) {
+    //    return {
+    //        query: function () {
+    //            return $http.get('/api/brandgrocery/');
+    //        },
+    //        get: function (id) {
+    //            return $http.get('/api/brandgrocery/' + id);
+    //        }
+    //    };
+    //}])
+    //.service('GenericGroceryService', ['$http', function ($http) {
+    //    return {
+    //        query: function () {
+    //            return $http.get('/api/genericgrocery/');
+    //        },
+    //        get: function (id) {
+    //            return $http.get('/api/genericgrocery/' + id);
+    //        }
+    //    };
+    //}])
+    //.controller('GroceryCtrl', ['BrandGroceryService', 'GenericGroceryService',
+    //    function (BrandGroceryService, GenericGroceryService) {
 
-            $scope.brandGroceries = {};
-            $scope.genericGroceries = {};
+    //        var self = this;
 
-            brandGroceryService.query(function (response) {
-                $scope.brandGroceries = response;
-            });
+    //        self.brandGroceries = {};
+    //        self.genericGroceries = {};
 
-            genericGroceryService.query(function (response) {
-                $scope.genericGroceries = response;
-            });
+    //        BrandGroceryService.query().then(function (response) {
+    //            self.brandGroceries = response.data;
+    //        }, function (errResponse) {
+    //            self.errorMessage = errResponse.data.msg;
+    //        });
+
+    //        GenericGroceryService.query().then(function (response) {
+    //            self.genericGroceries = response.data;
+    //        }, function (errResponse) {
+    //            self.errorMessage = errResponse.data.msg;
+    //        });
+
+    //}])
+    .controller('MajorCategoryCtrl', ['MajorCategoryService', function (MajorCategoryService) {
+
+        var self = this;
+
+        self.majorCategories = {};
+
+        MajorCategoryService.query().then(function (response) {
+            self.majorCategories = response.data;
+        }, function (errResponse) {
+            self.errorMessage = errResponse.data.msg;
+        });
+
+        self.status = {
+            isItemOpen: new Array(self.majorCategories.length),
+            isFirstDisabled: false
+        };
 
     }])
-    .controller('CategoryCtrl', ['$scope', 'majorCategoryService', 'minorCategoryService', 'itemCategoryService',
-        function ($scope, majorCategoryService, minorCategoryService, itemCategoryService) {
+    .controller('MinorCategoryCtrl', ['MinorCategoryService', function (MinorCategoryService) {
 
-            $scope.majorCategories = {};
-            $scope.minorCategories = {};
-            $scope.itemCategories = {};
+        var self = this;
 
-            majorCategoryService.query(function (response) {
-                $scope.majorCategories = response;
-            });
+        self.minorCategories = {};
 
-            minorCategoryService.query(function (response) {
-                $scope.minorCategories = response;
-            });
+        MinorCategoryService.query().then(function (response) {
+            self.minorCategories = response.data;
+        }, function (errResponse) {
+            self.errorMessage = errResponse.data.msg;
+        });
 
-            itemCategoryService.query(function (response) {
-                $scope.itemCategories = response;
-            });
+        self.status = {
+            isItemOpen: new Array(self.minorCategories.length),
+            isFirstDisabled: false
+        };
+    }])
+    .controller('ItemCategoryCtrl', ['ItemCategoryService', function (ItemCategoryService) {
+
+        var self = this;
+
+        self.itemCategories = {};
+
+        ItemCategoryService.query().then(function (response) {
+            self.itemCategories = response.data;
+        }, function (errResponse) {
+            self.errorMessage = errResponse.data.msg;
+        });
     }]);

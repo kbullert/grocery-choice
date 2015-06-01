@@ -11,6 +11,6 @@
         public string Size { get; set; }
         public int MajorCategoryId { get; set; }
         public int MinorCategoryId { get; set; }
-        public int? ItemCategoryId { get; set; }
+        public int ItemCategoryId { get; set; }
     }
 }

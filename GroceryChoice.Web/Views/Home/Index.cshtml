@@ -14,18 +14,18 @@
     <div class="nav navbar-inverse">
         <a class="navbar-brand" href="#">Grocery Choice</a>
     </div>
-    <div class="panel panel-default row">
+    <div class="pull-left" ng-controller="GroceryCategoryCtrl as grocCatCtrl">
         <div class="col-xs-3" ng-controller="MajorCategoryCtrl as majorCtrl">
             <accordion>
                 <accordion-group ng-repeat="major in majorCtrl.majorCategories">
                     <accordion-heading>
-                        <a href="#/{{major.MajorCategoryName}}">{{major.MajorCategoryName}}</a>
+                        <a href="#/{{major.MajorCategoryName}}/" ng-click="grocCatCtrl.majorCategory = major.MajorCategoryId">{{major.MajorCategoryName}}</a>
                     </accordion-heading>
                     <div ng-controller="MinorCategoryCtrl as minorCtrl">
                         <accordion>
                             <accordion-group ng-repeat="minor in minorCtrl.minorCategories | filter: { MajorCategoryId: major.MajorCategoryId}">
                                 <accordion-heading>
-                                    <a href="#/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/">{{minor.MinorCategoryName}}</a>
+                                    <a href="#/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/" ng-click="grocCatCtrl.minorCategory = minor.MinorCategoryId">{{minor.MinorCategoryName}}</a>
                                 </accordion-heading>
                                 <div ng-controller="ItemCategoryCtrl as itemCtrl">
                                     <div ng-repeat="item in itemCtrl.itemCategories | filter: { MinorCategoryId: minor.MinorCategoryId}">
@@ -38,8 +38,11 @@
                 </accordion-group>
             </accordion>
         </div>
-        <div class="col-xs-8" ng-controller="GroceryCtrl as grocCtrl">
-                @*<table class="table table-striped">
+        <div class="pull-right">
+            <div class="col-xs-8">
+                <div ng-view></div>
+            </div>
+            @*<table class="table table-striped">
                     <tr>
                         <td>Id</td>
                         <td>Brand</td>
@@ -76,15 +79,8 @@
         </div>
     </div>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
     <script src="~/Scripts/ui-bootstrap-tpls-0.13.0.js"></script>
-    @*<script id="template/accordion/accordion-group.html" type="text/ng-template">
-        <div class="accordion-group">
-            <div class="accordion-heading"><a class="accordion-toggle" ng-click="isOpen = !isOpen" accordion-transclude="heading">{{heading}}</a></div>
-            <div class="accordion-body" ng-show="isOpen">
-                <div class="accordion-inner" ng-transclude></div>
-            </div>
-        </div>
-    </script>*@
     <script src="~/Scripts/app/groceryChoice.js"></script>
 </body>
 </html>

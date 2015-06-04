@@ -36,6 +36,7 @@ namespace GroceryChoice.Repository
 
             new List<ItemCategory> {
                 new ItemCategory() { MinorCategoryId = 1, ItemCategoryName = "Peaches" },
+                new ItemCategory() { MinorCategoryId = 1, ItemCategoryName = "Pears" },
                 new ItemCategory() { MinorCategoryId = 2, ItemCategoryName = "Peas" },
                 new ItemCategory() { MinorCategoryId = 3, ItemCategoryName = "Flour" },
                 new ItemCategory() { MinorCategoryId = 4, ItemCategoryName = "Sugar" }

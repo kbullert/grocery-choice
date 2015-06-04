@@ -1,67 +1,104 @@
-﻿angular.module('groceryChoice', ['ui.bootstrap', 'ngRoute'])
+﻿angular.module('groceryChoice', ['ngRoute'])
     .config(function ($routeProvider, $locationProvider) {
-        $locationProvider.html5Mode(false);
+        $locationProvider.html5Mode(true);
 
-        //$locationProvider.hashPrefix('#');
+        $locationProvider.hashPrefix('#');
 
         $routeProvider.when('/', {
             templateUrl: 'Scripts/views/welcome.html'
         }).when('/:majorCategory', {
-            templateUrl: 'Scripts/views/majorCategoryGrocery.html',
+            templateUrl: 'Scripts/views/groceryMajor.html',
             controller: ['$routeParams', function($routeParams) {
                 this.majorCateogry = $routeParams.majorCategory;
             }],
             controllerAs: 'CategoryMenuCtrl'
         }).when('/:majorCategory/:minorCategory', {
-            templateUrl: 'Scripts/views/minorCategoryGrocery.html',
+            templateUrl: 'Scripts/views/groceryMinor.html',
             controller: ['$routeParams', function ($routeParams) {
-                //this.majorCateogry = $routeParams.majorCategory;
-                this.minorCategory = $routeParams.minorCategory;
+                this.minorCateogry = $routeParams.minorCategory;
+            }],
+            controllerAs: 'CategoryMenuCtrl'
+        }).when('/:majorCategory/:minorCategory/:itemCategory', {
+            templateUrl: 'Scripts/views/groceryItem.html',
+            controller: ['$routeParams', function ($routeParams) {
+                this.itemCateogry = $routeParams.itemCategory;
             }],
             controllerAs: 'CategoryMenuCtrl'
         });
     })
-    .factory('MinorCategoryService', ['$http', function ($http) {
+    .factory('MinorCategoryService', ['$http', '$q', function ($http, $q) {
         return {
             query: function () {
-                return $http.get('/api/minorcategory/');
+                var promise = $http.get('/api/minorcategory/')
+                .success(function (data, status, headers, config) {
+                    return data;
+                })
+                .error(function (data, status, headers, config) {
+                    return {"status": false};
+                });
+
+                return promise;
             },
             get: function (id) {
                 return $http.get('api/minorcategory' + id);
             }
         };
     }])
-    .factory('MajorCategoryService', ['$http', function ($http) {
+    .factory('MajorCategoryService', ['$http', '$q', function ($http, $q) {
         return {
-            query: function () {
-                return $http.get('/api/majorcategory/');
-            },
+                query: function () {
+                    var promise = $http.get('/api/majorcategory/')
+                    .success(function (data, status, headers, config) {
+                        return data;
+                    })
+                    .error(function (data, status, headers, config) {
+                        return {"status": false};
+                    });
+
+                    return promise;
+                },
             get: function (id) {
-                return $http.get('api/majorcategory/' + id);
+                return $http.get('api/majorcategory' + id);
             }
         };
     }])
-    .factory('ItemCategoryService', ['$http', function ($http) {
+    .factory('ItemCategoryService', ['$http', '$q', function ($http, $q) {
         return {
-            query: function () {
-                return $http.get('/api/itemcategory/');
-            },
+                query: function () {
+                    var promise = $http.get('/api/itemcategory/')
+                    .success(function (data, status, headers, config) {
+                        return data;
+                    })
+                    .error(function (data, status, headers, config) {
+                        return {"status": false};
+                    });
+
+                    return promise;
+                },
             get: function (id) {
                 return $http.get('/api/itemcategory/' + id);
             }
         };
     }])
-    .factory('BrandGroceryService', ['$http', function ($http) {
+    .factory('BrandGroceryService', ['$http', '$q', function ($http, $q) {
         return {
-            query: function () {
-                return $http.get('/api/brandgrocery/');
-            },
+                query: function () {
+                    var promise = $http.get('/api/brandgrocery/')
+                    .success(function (data, status, headers, config) {
+                        return data;
+                    })
+                    .error(function (data, status, headers, config) {
+                        return {"status": false};
+                    });
+
+                    return promise;
+                },
             get: function (id) {
                 return $http.get('/api/brandgrocery/' + id);
             }
         };
     }])
-    //.service('GenericGroceryService', ['$http', function ($http) {
+    //.service('GenericGroceryService', ['$http', '$q',function ($http, $q) {
     //    return {
     //        query: function () {
     //            return $http.get('/api/genericgrocery/');
@@ -71,8 +108,19 @@
     //        }
     //    };
     //}])
-    .controller('CategoryMenuCtrl', [ function () {
+    .controller('CategoryGroceryCtrl', [ function () {
         
+        var self = this;
+
+        self.major = 0;
+
+        self.minor = 0;
+
+        self.item = 0;
+
+    }])
+    .controller('CategoryMenuCtrl', [function () {
+
         var self = this;
 
         self.majorCategory = '';
@@ -80,29 +128,17 @@
         self.minorCategory = '';
 
         self.itemCategory = '';
-
-    }])
-    .controller('GroceryCategoryCtrl', [ function () {
-
-        var self = this;
-
-
-        self.majorCategory = 0;
-
-        self.minorCategory = 0;
-
-        self.itemCategory = 0;
     }])
     .controller('GroceryCtrl', ['BrandGroceryService',
         function (BrandGroceryService) {
 
             var self = this;
 
-            self.brandGroceries = {};
+            self.brandGroceries = [];
             //self.genericGroceries = {};
 
-            BrandGroceryService.query().then(function (response) {
-                self.brandGroceries = response.data;
+            BrandGroceryService.query().then(function (promise) {
+                self.brandGroceries = promise.data;
             }, function (errResponse) {
                 self.errorMessage = errResponse.data.msg;
             });
@@ -114,50 +150,31 @@
             //});
 
     }])
-    .controller('MajorCategoryCtrl', ['MajorCategoryService', function (MajorCategoryService) {
+    .controller('CategoryCtrl', ['MajorCategoryService', 'MinorCategoryService', 'ItemCategoryService',
+        function (MajorCategoryService, MinorCategoryService, ItemCategoryService) {
 
         var self = this;
 
-        self.majorCategories = {};
+        self.majorCategories = [];
+        self.minorCategories = [];
+        self.itemCategories = [];
 
-        MajorCategoryService.query().then(function (response) {
-            self.majorCategories = response.data;
+        MajorCategoryService.query().then(function (promise) {
+            self.majorCategories = promise.data;
         }, function (errResponse) {
             self.errorMessage = errResponse.data.msg;
         });
 
-        self.status = {
-            isItemOpen: new Array(self.majorCategories.length),
-            isFirstDisabled: false
-        };
-
-    }])
-    .controller('MinorCategoryCtrl', ['MinorCategoryService', function (MinorCategoryService) {
-
-        var self = this;
-
-        self.minorCategories = {};
-
-        MinorCategoryService.query().then(function (response) {
-            self.minorCategories = response.data;
+        MinorCategoryService.query().then(function (promise) {
+            self.minorCategories = promise.data;
         }, function (errResponse) {
             self.errorMessage = errResponse.data.msg;
         });
 
-        self.status = {
-            isItemOpen: new Array(self.minorCategories.length),
-            isFirstDisabled: false
-        };
-    }])
-    .controller('ItemCategoryCtrl', ['ItemCategoryService', function (ItemCategoryService) {
-
-        var self = this;
-
-        self.itemCategories = {};
-
-        ItemCategoryService.query().then(function (response) {
-            self.itemCategories = response.data;
+        ItemCategoryService.query().then(function (promise) {
+            self.itemCategories = promise.data;
         }, function (errResponse) {
             self.errorMessage = errResponse.data.msg;
         });
+
     }]);

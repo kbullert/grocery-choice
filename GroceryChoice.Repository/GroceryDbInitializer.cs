@@ -20,9 +20,10 @@ namespace GroceryChoice.Repository
         {
             new List<BrandGrocery> {
                 new BrandGrocery() { UPC = "024000016717", Brand = "Del Monte", Description = "Sliced Peaches in Heavy Syrup", Size = "15.25 oz", MajorCategoryId = 1, MinorCategoryId = 1, ItemCategoryId = 1 },
-                new BrandGrocery() { UPC = "024000163084", Brand = "Del Monte", Description = "Sweet Peas", Size = "15 oz", MajorCategoryId = 1, MinorCategoryId = 2, ItemCategoryId = 2 },
-                new BrandGrocery() { UPC = "016000106109", Brand = "Gold Medal", Description = "All-Purpose Enriched Bleached Flour", Size = "5 lb", MajorCategoryId = 2, MinorCategoryId = 3, ItemCategoryId = 3 },
-                new BrandGrocery() { UPC = "070090304104", Brand = "Crystal Sugar", Description = "Granulated Sugar", Size = "4 lb", MajorCategoryId = 2, MinorCategoryId = 4, ItemCategoryId = 4 }
+                new BrandGrocery() { UPC = "024000132097", Brand = "Del Monte", Description = "No Sugar Added Sliced Pears", Size = "15.25 oz", MajorCategoryId = 1, MinorCategoryId = 1, ItemCategoryId = 2 },
+                new BrandGrocery() { UPC = "024000163084", Brand = "Del Monte", Description = "Sweet Peas", Size = "15 oz", MajorCategoryId = 1, MinorCategoryId = 2, ItemCategoryId = 3 },
+                new BrandGrocery() { UPC = "016000106109", Brand = "Gold Medal", Description = "All-Purpose Enriched Bleached Flour", Size = "5 lb", MajorCategoryId = 2, MinorCategoryId = 3, ItemCategoryId = 4 },
+                new BrandGrocery() { UPC = "070090304104", Brand = "Crystal Sugar", Description = "Granulated Sugar", Size = "4 lb", MajorCategoryId = 2, MinorCategoryId = 4, ItemCategoryId = 5 }
             }.ForEach(bg => context.BrandGroceries.Add(bg));
 
             context.SaveChanges();

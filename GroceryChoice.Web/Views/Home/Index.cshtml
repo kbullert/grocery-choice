@@ -1,86 +1,49 @@
 ﻿<!DOCTYPE html>
 
-<html ng-app="groceryChoice">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/app/groceryChoice.js"></script>
     <title>Grocery Choice</title>
     <base href="/" />
 </head>
-<body>
+<body ng-app="groceryChoice">
     <div class="nav navbar-inverse">
         <a class="navbar-brand" href="#">Grocery Choice</a>
     </div>
-    <div class="pull-left" ng-controller="GroceryCategoryCtrl as grocCatCtrl">
-        <div class="col-xs-3" ng-controller="MajorCategoryCtrl as majorCtrl">
-            <accordion>
-                <accordion-group ng-repeat="major in majorCtrl.majorCategories">
-                    <accordion-heading>
-                        <a href="#/{{major.MajorCategoryName}}/" ng-click="grocCatCtrl.majorCategory = major.MajorCategoryId">{{major.MajorCategoryName}}</a>
-                    </accordion-heading>
-                    <div ng-controller="MinorCategoryCtrl as minorCtrl">
-                        <accordion>
-                            <accordion-group ng-repeat="minor in minorCtrl.minorCategories | filter: { MajorCategoryId: major.MajorCategoryId}">
-                                <accordion-heading>
-                                    <a href="#/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/" ng-click="grocCatCtrl.minorCategory = minor.MinorCategoryId">{{minor.MinorCategoryName}}</a>
-                                </accordion-heading>
-                                <div ng-controller="ItemCategoryCtrl as itemCtrl">
-                                    <div ng-repeat="item in itemCtrl.itemCategories | filter: { MinorCategoryId: minor.MinorCategoryId}">
-                                        <span><a href="#/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/{{item.ItemCategoryName}}/">{{item.ItemCategoryName}}</a></span>
+    <div ng-controller="CategoryGroceryCtrl as catGrocCtrl">
+        <div class="pull-left">
+            <div ng-controller="CategoryCtrl as catCtrl">
+                <ul ng-repeat="major in catCtrl.majorCategories">
+                    <li>
+                        <a href="/{{major.MajorCategoryName}}/" ng-click="catGrocCtrl.major = major.MajorCategoryId">{{major.MajorCategoryName}}</a>
+                        <div >
+                            <ul ng-repeat="minor in catCtrl.minorCategories | filter: { MajorCategoryId: major.MajorCategoryId}">
+                                <li>
+                                    <a href="/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/" ng-click="catGrocCtrl.minor = minor.MinorCategoryId">{{minor.MinorCategoryName}}</a>
+                                    <div>
+                                        <ul ng-repeat="item in catCtrl.itemCategories | filter: { MinorCategoryId: minor.MinorCategoryId}" ng-if="minor.HasItemCategory">
+                                            <li>
+                                                <a href="/{{major.MajorCategoryName}}/{{minor.MinorCategoryName}}/{{item.ItemCategoryName}}/" ng-click="catGrocCtrl.item = item.ItemCategoryId">{{item.ItemCategoryName}}</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </div>
-                            </accordion-group>
-                        </accordion>
-                    </div>
-                </accordion-group>
-            </accordion>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="pull-right">
-            <div class="col-xs-8">
-                <div ng-view></div>
-            </div>
-            @*<table class="table table-striped">
-                    <tr>
-                        <td>Id</td>
-                        <td>Brand</td>
-                        <td>Description</td>
-                        <td>Size</td>
-                        <td>UPC</td>
-                    </tr>
-                    <tr ng-repeat="brand in grocCtrl.brandGroceries">
-                        <td>{{brand.BrandGroceryId}}</td>
-                        <td>{{brand.Brand}}</td>
-                        <td>{{brand.Description}}</td>
-                        <td>{{brand.Size}}</td>
-                        <td>{{brand.UPC}}</td>
-                        <td>
-                            <table class="table table-striped">
-                                <tr>
-                                    <td>Store</td>
-                                    <td>Store Brand</td>
-                                    <td>Description</td>
-                                    <td>Size</td>
-                                    <td>UPC</td>
-                                </tr>
-                                <tr ng-repeat="generic in grocCtrl.genericGroceries | filter: { BrandGroceryId: brand.BrandGroceryId}">
-                                    <td>{{generic.Store}}</td>
-                                    <td>{{generic.StoreBrand}}</td>
-                                    <td>{{generic.Description}}</td>
-                                    <td>{{generic.Size}}</td>
-                                    <td>{{generic.UPC}}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>*@
+            <div ng-view></div>
         </div>
     </div>
-    <script src="~/Scripts/angular.js"></script>
-    <script src="~/Scripts/angular-route.js"></script>
-    <script src="~/Scripts/ui-bootstrap-tpls-0.13.0.js"></script>
-    <script src="~/Scripts/app/groceryChoice.js"></script>
 </body>
 </html>

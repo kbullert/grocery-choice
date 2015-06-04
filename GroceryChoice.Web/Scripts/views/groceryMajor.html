@@ -1,0 +1,22 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Brand</td>
+            <td>Description</td>
+            <td>Size</td>
+            <td>UPC</td>
+            <td>Major Category ID</td>
+        </tr>
+    </thead>
+    <tbody ng-controller="GroceryCtrl as groceryCtrl">
+        <tr ng-repeat="brand in groceryCtrl.brandGroceries | filter: {MajorCategoryId: catGrocCtrl.major}">
+            <td>{{brand.BrandGroceryId}}</td>
+            <td>{{brand.Brand}}</td>
+            <td>{{brand.Description}}</td>
+            <td>{{brand.Size}}</td>
+            <td>{{brand.UPC}}</td>
+            <td>{{brand.MajorCategoryId}}</td>
+        </tr>
+    </tbody>
+</table>
